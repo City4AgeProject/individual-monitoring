@@ -14,10 +14,11 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'ojs/ojrouter', 'ojs/ojdialog',
       // Router setup
       self.router = oj.Router.rootInstance;
       self.router.configure({
-        'cr_list': {label: 'Care Recipient'},
+         'cr_list_full': {label: 'Care Recipient', isDefault: true},
+        'cr_list': {label: 'Care Recipient dummy'},
 //        'people': {label: 'People'},
 //        'library': {label: 'Library'},
-        'detection_ges': {label: 'Detection GES', isDefault: true},
+        'detection_ges': {label: 'Detection GES'},
         'detection_gef': {label: 'Detection GEF'}
       });
       oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
@@ -58,6 +59,10 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'ojs/ojrouter', 'ojs/ojdialog',
         switch (ui.item.attr("id")) {
           case "about":
             $("#aboutDialog").ojDialog("open");
+            break;
+        
+           case "pref":
+            $("#prefDialog").ojDialog("open");
             break;
           default:
         }
