@@ -3,7 +3,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
     'ojs/ojpopup', 'ojs/ojslider', 'ojs/ojmenu', 'ojs/ojdialog'],
         function (oj, ko, $) {
 
-            function graphicsContentViewModel() {
+            function GraphicsContentViewModel() {
                 var self = this;
                 var OVERALL_SERIES_NAME = 'Overall';
                 var PRE_FRAIL_SERIES_NAME = 'Pre-Frail';
@@ -33,22 +33,52 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
                 });
                 /* End: tracking mouse position when do mouseover and mouseup/touchend event */
 
+
                 /* Detection GEF Groups Line Chart configuration with dummy data */
+
                 var groups = ["Initial", "Jan 2016", "Feb 2016", "Mar 2016", "Apr 2016", "May 2016", "Jun 2016", "Jul 2016", "Avg 2016", "Sep 2016", "Oct 2016", "Nov 2016", "Dec 2016"];
 
                 function getValue() {
+
                     return Math.random() * 4 + 1;
                 }
 
-                var series = [{name: GROUP1_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                    {name: GROUP2_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                    {name: PRE_FRAIL_SERIES_NAME, items: [0.1, 0.1, 0.1, 0.1, 0.1, null, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], color: '#ffe066', lineWidth: 10, selectionMode: 'none'},
-                    {name: FRAIL_SERIES_NAME, items: [null, null, null, null, 0.1, 0.1, 0.1, null, null, null, null, null, null], color: '#ff5c33', lineWidth: 10, selectionMode: 'none'},
-                    {name: FIT_SERIES_NAME, items: [0.1, 0.1, null, null, null, null, null, null, null, null, null, null, null], color: '#008c34', lineWidth: 10, selectionMode: 'none'},
-                    {name: OVERALL_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], color: '#999999', lineWidth: 5}];
+//                var series = [{name: GROUP1_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                    {name: GROUP2_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                    {name: PRE_FRAIL_SERIES_NAME, items: [0.1, 0.1, 0.1, 0.1, 0.1, null, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], color: '#ffe066', lineWidth: 10, selectionMode: 'none'},
+//                    {name: FRAIL_SERIES_NAME, items: [null, null, null, null, 0.1, 0.1, 0.1, null, null, null, null, null, null], color: '#ff5c33', lineWidth: 10, selectionMode: 'none'},
+//                    {name: FIT_SERIES_NAME, items: [0.1, 0.1, null, null, null, null, null, null, null, null, null, null, null], color: '#008c34', lineWidth: 10, selectionMode: 'none'},
+//                    {name: OVERALL_SERIES_NAME, items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], color: '#999999', lineWidth: 5}];
+//
+//                self.seriesValue = ko.observableArray(series);
+//                self.groupsValue = ko.observableArray(groups);
 
-                self.seriesValue = ko.observableArray(series);
-                self.groupsValue = ko.observableArray(groups);
+
+                self.seriesValue = ko.observableArray();
+                self.groupsValue = ko.observableArray();
+                self.careReceiverId = oj.Router.rootInstance.retrieve();
+
+
+                $.getJSON("http://localhost:8084/c4AServices/rest/careReceiversData/getGroups?careReceiverId=" + self.careReceiverId + "&parentFactorId=-1")
+                        .then(function (radarData) {
+                            console.log("fata ", JSON.stringify(radarData));
+                            $.each(radarData.itemList, function (i, list) {
+                                self.seriesValue.push({
+                                    name: list.items[0].groupName,
+                                    items: list.items[0].itemList
+                                });
+                            });
+//
+                            $.each(radarData.itemList[0].items[0].dateList, function (j, dateItem) {
+                                self.groupsValue.push(dateItem);
+                            });
+                        });
+
+
+
+
+
+
 
                 /* End Detection GEF Groups Line Chart configuration with dummy data */
 
@@ -67,10 +97,51 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
                     {name: "Health – physical", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
                     {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
 
-                self.lineSeries1Value = ko.observableArray(lineSeries1);
-                self.lineSeries2Value = ko.observableArray(lineSeries2);
-                self.lineGroupsValue = ko.observableArray(groups);
+//                self.lineSeries1Value = ko.observableArray(lineSeries1);
+//                self.lineSeries2Value = ko.observableArray(lineSeries2);
+//                self.lineGroupsValue = ko.observableArray(groups);
                 /* End: Group 1 and Group 2 Line Chart configuration with dummy data */
+
+                self.lineSeries1Value = ko.observableArray();
+                self.lineSeries2Value = ko.observableArray();
+                self.lineGroupsValue = ko.observableArray(groups);
+                
+                 self.titleValue = ko.observable("");
+                self.chartDrill = function (event, ui) {
+
+                    var lineSeries3 = [{name: "Motility", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Physical Activity", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Basic Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Instrumental Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Socialization", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Cultural Engagement", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
+
+                    /* Group 2 */
+                    var lineSeries4 = [{name: "Environment", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Dependence", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Health – physical", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+                        {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
+
+
+                    graphicsContentViewModel.lineSeries1Value(lineSeries3);
+                    graphicsContentViewModel.lineSeries2Value(lineSeries4);
+                     graphicsContentViewModel.titleValue("Behavioural Geriatric factorssss" );
+//                    self.titleValue = "  graphicsContentViewModel.lineSeries2Value(lineSeries4)";
+//                    this.lineSeries1Value = ko.observableArray(lineSeries3);
+//                    this.lineSeries2Value = ko.observableArray(lineSeries4);
+
+                    $('#currentText').html("drill:");
+                    var drillParams = "";
+                    if (ui['series'])
+                        drillParams += 'series: ' + ui['series'] + '<br/>';
+                    if (ui['group'])
+                        drillParams += 'group: ' + ui['group'] + '<br/>';
+                    $('#currentText2').html(drillParams);
+                    
+                    
+                      $("#detectionGEFGroup1FactorsLineChart").toggleClass("factors-chart-hide");
+                };
+
 
                 /* handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
                 self.handleAttached = function (info) {
@@ -79,6 +150,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
                     /* Assign summary Show more/Show less  */
                     $('#summary').css({height: '20px', overflow: 'hidden'});
                     $('#showmore').on('click', function () {
+                        console.log("clicked");
                         var $this = $("#summary");
                         if ($this.data('open')) {
                             $("#showmore").html("Show more");
@@ -221,7 +293,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
                 self.chartOptionChangeFactorsGroup1 = function (event, ui) {
                     //console.log(ui);
                     if (ui['option'] === 'highlightedCategories') {
-                        if ((ui['value'].length > 0)&& (!closeGEFDetailsShowPopupScheduled)) {
+                        if ((ui['value'].length > 0) && (!closeGEFDetailsShowPopupScheduled)) {
                             //alert('testi self.selectionValueChange = function(event, data) {');                            
                             //console.log('Izvrsena selekcija linije na donjem dijagramu');
                             $('#GEFGroup1DetailsShowPopup').ojPopup('open');
@@ -311,8 +383,8 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
                 self.nowrap = ko.observable(false);
 
             }
-
-            return new graphicsContentViewModel();
+            var graphicsContentViewModel = new GraphicsContentViewModel();
+            return  graphicsContentViewModel;
         }
 
 
