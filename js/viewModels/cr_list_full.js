@@ -1,11 +1,14 @@
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'ojs/ojgauge', 'ojs/ojarraytabledatasource'],
-        function (oj, ko, $)
+define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'ojs/ojgauge', 'ojs/ojarraytabledatasource'],
+        function (oj, ko, sp, $)
         {
+
             function ListViewModel() {
                 var self = this;
                 self.data = ko.observableArray();
 
-                $.getJSON("http://localhost:8084/c4AServices/rest/careReceiversData/getCareReceivers").
+                var url = sp.baseUrl + sp.receiversMethod;
+                
+                $.getJSON(url).
                         then(function (users) {
                             $.each(users.itemList, function () {
 //                                console.log("userssss ", JSON.stringify(this));
@@ -20,6 +23,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'oj
                                     interv_status: this.interventionstatus,
                                     interv_date: this.interventionDate
                                 });
+                                   $(".loader-hover").hide();
                             });
                         });
 
@@ -32,11 +36,15 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'oj
                         });
 
 
-
-
+                     
                 self.viewGef = function (userId) {
                     oj.Router.rootInstance.store(userId);
                     oj.Router.rootInstance.go("detection_gef");
+                };
+
+                self.viewGes = function () {
+
+                    oj.Router.rootInstance.go("detection_ges");
                 };
 
 

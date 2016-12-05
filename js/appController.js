@@ -53,16 +53,15 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'ojs/ojrouter', 'ojs/ojdialog',
       // Application Name used in Branding Area
       self.appName = ko.observable("C4A");
       // User Info used in Global Navigation area
-      self.userLogin = ko.observable("john.doe@c4a.com");
+      self.userLogin = ko.observable("Dr Leonardo Mutti");
       // Dropdown menu states
       self.menuItemSelect = function (event, ui) {
-        switch (ui.item.attr("id")) {
-          case "about":
+        switch (ui.item.attr("id")) {       
+           case "out":
             $("#aboutDialog").ojDialog("open");
             break;
-        
-           case "pref":
-            $("#prefDialog").ojDialog("open");
+           case "help-list":
+            $("#help-hover").ojDialog("open");
             break;
           default:
         }

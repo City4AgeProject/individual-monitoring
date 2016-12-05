@@ -1,11 +1,12 @@
 <!--<div class="oj-helper-clearfix oj-dialog-header">-->
 
 <div  class="oj-md-12 oj-flex-item page-padding" >
+
     <div class="page-padding">
         <table id="table" summary="Department List" aria-label="Departments Table"
                data-bind="ojComponent: {component: 'ojTable', 
                                 data: dataSource, 
-                                columnsDefault: {headerStyle: 'font-weight:bold;',sortable: 'none'},  
+                                columnsDefault: {headerStyle: 'background:transparent;font-weight:bold;',sortable: 'none'},  
                                 columns: [{headerText: 'Frailty status', 
                                         field: 'fr_status',
                                         template: 'frailty_status'},
@@ -47,7 +48,7 @@
 <script type="text/html" id="frailty_status">
 
     <div >
-        <img data-bind="attr: {src: 'images/listView/' + fr_status + '.png', alt: fr_status}"></img>
+        <img data-bind="attr: {src: 'images/listview/' + fr_status + '.png', alt: fr_status}"></img>
     </div>
 
     <!--            <li data-bind="attr: {id: 'emp'+id}">
@@ -79,10 +80,10 @@
         <ul id="myMenu" style="display:none"
             data-bind="ojComponent: {component: 'ojMenu', select: 'menuItemSelect'}">
             <li id="view_more_det">
-                <a data-bind="click: function(){$root.router.go('detection_gef'); }" href="#">View more details</a>
+                <a data-bind="click: function(){$parent.viewGef(cr_id);}" href="#">View more details</a>
             </li>
             <li id="view_inter_sum">
-                <a data-bind="click: function(){$parent.viewGef(cr_id);}" href="#">View Intervention Summary</a>
+                <a data-bind="click: function(){$parent.viewGes();}" href="#">View Intervention Summary</a>
             </li>
             <li id="view_det_sum">
                 <a data-bind="click: function(){$root.router.go('detection_gef'); }" href="#">View Detection Summary</a>

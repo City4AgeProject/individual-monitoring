@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(eu.city4age.dashboard.api.service.MyDummyService.class);
         resources.add(eu.city4age.dashboard.api.service.RelatedkwsFacadeREST.class);
         resources.add(eu.city4age.dashboard.api.service.SearchrecFacadeREST.class);
+        
     }
     
 }
