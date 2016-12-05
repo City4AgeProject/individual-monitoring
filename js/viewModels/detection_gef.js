@@ -5,7 +5,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
             function GraphicsContentViewModel() {
                 var self = this;
                 var url = sp.baseUrl + sp.groupsMethod;
-                var lineColors = ['#ea97f1', '#5dd6c9', '#b4b2b2'];
+                var lineColors = ['#ea97f1', '#5dd6c9', '#b4b2b2', '#e4d70d', '#82ef46', '#29a4e4'];
 
                 var OVERALL_SERIES_NAME = 'Overall';
                 var PRE_FRAIL_SERIES_NAME = 'Pre-Frail';
@@ -44,7 +44,6 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 
 
                 /* Detection GEF Groups Line Chart configuration with dummy data */
-
                 var groups = ["Initial", "Jan 2016", "Feb 2016", "Mar 2016", "Apr 2016", "May 2016", "Jun 2016", "Jul 2016", "Avg 2016", "Sep 2016", "Oct 2016", "Nov 2016", "Dec 2016"];
 
                 function getValue() {
@@ -77,21 +76,14 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                                     color: lineColors[i]
                                 });
                             });
-//
                             $.each(radarData.itemList[0].items[0].dateList, function (j, dateItem) {
                                 self.groupsValue.push(dateItem);
                             });
-
                             self.seriesValue.push({name: FIT_SERIES_NAME, items: [0.1, 0.1, null, null, null, null, null, null, null, null, null, null, null], color: '#008c34', lineWidth: 10, selectionMode: 'none'});
                             self.seriesValue.push({name: PRE_FRAIL_SERIES_NAME, items: [null, null, 0.1, 0.1, 0.1, null, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], color: '#ffe066', lineWidth: 10, selectionMode: 'none'});
                             self.seriesValue.push({name: FRAIL_SERIES_NAME, items: [null, null, null, null, 0.1, 0.1, 0.1, null, null, null, null, null, null], color: '#ff5c33', lineWidth: 10, selectionMode: 'none'});
-
                             $(".loader-hover").hide();
                         });
-
-
-
-
                 /* End Detection GEF Groups Line Chart configuration with dummy data */
 
                 /* Group 1 and Group 2 Line Chart configuration with dummy data */
@@ -109,12 +101,10 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                     {name: "Health – physical", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
                     {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
 
-//                self.lineSeries1Value = ko.observableArray(lineSeries1);
-//                self.lineSeries2Value = ko.observableArray(lineSeries2);
-//                self.lineGroupsValue = ko.observableArray(groups);
+
                 /* End: Group 1 and Group 2 Line Chart configuration with dummy data */
 
-                self.lineSeries1Value = ko.observableArray();
+                self.lineSeriesValue = ko.observableArray();
                 self.lineSeries2Value = ko.observableArray();
                 self.lineGroupsValue = ko.observableArray(groups);
 
@@ -135,23 +125,68 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
 
 
-                    graphicsContentViewModel.lineSeries1Value(lineSeries3);
-                    graphicsContentViewModel.lineSeries2Value(lineSeries4);
-                    graphicsContentViewModel.titleValue("Behavioural Geriatric factorssss");
-//                    self.titleValue = "  graphicsContentViewModel.lineSeries2Value(lineSeries4)";
-//                    this.lineSeries1Value = ko.observableArray(lineSeries3);
-//                    this.lineSeries2Value = ko.observableArray(lineSeries4);
-
-                    $('#currentText').html("drill:");
-                    var drillParams = "";
-                    if (ui['series'])
-                        drillParams += 'series: ' + ui['series'] + '<br/>';
-                    if (ui['group'])
-                        drillParams += 'group: ' + ui['group'] + '<br/>';
-                    $('#currentText2').html(drillParams);
-
-                    $("#detectionGEFGroup1FactorsLineChart").toggleClass("factors-chart-hide");
+                    var seriesValue = ui['series'];
+                    document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
+                    if (seriesValue.indexOf("Behavioural") !== -1) {
+                        graphicsContentViewModel.lineSeriesValue(lineSeries3);
+                        graphicsContentViewModel.titleValue("Behavioural Geriatric factors");
+                    } else if (seriesValue.indexOf("Contextual") !== -1) {
+                        graphicsContentViewModel.lineSeriesValue(lineSeries4);
+                        graphicsContentViewModel.titleValue("Contextual Geriatric factors");
+                    } else if (seriesValue.indexOf("overall") !== -1) {
+                        console.log("overall ", seriesValue);
+                    } else {
+                        console.log("nothing ", seriesValue);
+                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'none';
+                    }
                 };
+
+
+                /* polar chart - uradjen za drugu grupu i to za mesece M1, M2 i M5 */
+                var lineSeriesPolar1 = [{name: groups[1], items: [lineSeries1[0].items[1], lineSeries1[1].items[1], lineSeries1[2].items[1], lineSeries1[3].items[1], lineSeries1[4].items[1], lineSeries1[5].items[1]], color: '#ED6647'},
+                    {name: groups[5], items: [lineSeries1[0].items[5], lineSeries1[1].items[5], lineSeries1[2].items[5], lineSeries1[3].items[5], lineSeries1[4].items[5], lineSeries1[5].items[5]], color: '#6DDBDB'}];
+                var lineGroupsPolar1 = lineSeries1; //grupe su nazivi serija linijskog dijagrama
+
+                var lineSeriesPolar2 = [{name: groups[1], items: [lineSeries2[0].items[1], lineSeries2[1].items[1], lineSeries2[2].items[1], lineSeries2[3].items[1]], color: '#FAD55C'},
+                    {name: groups[2], items: [lineSeries2[0].items[2], lineSeries2[1].items[2], lineSeries2[2].items[2], lineSeries2[3].items[2]], color: '#8561C8'},
+                    {name: groups[5], items: [lineSeries2[0].items[5], lineSeries2[1].items[5], lineSeries2[2].items[5], lineSeries2[3].items[5]], color: '#1DDB1B'}];
+                var lineGroupsPolar2 = lineSeries2; //grupe su nazivi serija linijskog dijagrama
+
+                self.polarGridShapeValue1 = ko.observable();
+                self.polarChartSeriesValue1 = ko.observableArray();
+                self.polarChartGroupsValue1 = ko.observableArray();
+
+                self.polarGridShapeValue2 = ko.observable();
+                self.polarChartSeriesValue2 = ko.observableArray();
+                self.polarChartGroupsValue2 = ko.observableArray();
+
+                self.stackValue = ko.observable('off');
+                self.typeValue = ko.observable('line');
+                self.frailtyMenuItemSelect = function (event, ui) {
+                    var launcherId = ui.item.children("a").text();
+                    if (launcherId.indexOf("Morphology") !== -1) {
+                        document.getElementById('detectionGEFGroupsLineChart').style.display = 'none';
+                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'none';
+
+                        graphicsContentViewModel.polarGridShapeValue1('polygon');
+                        graphicsContentViewModel.polarChartSeriesValue1(lineSeriesPolar1);
+                        graphicsContentViewModel.polarChartGroupsValue1(lineGroupsPolar1);
+
+                        graphicsContentViewModel.polarGridShapeValue2('polygon');
+                        graphicsContentViewModel.polarChartSeriesValue2(lineSeriesPolar2);
+                        graphicsContentViewModel.polarChartGroupsValue2(lineGroupsPolar2);
+
+                        document.getElementById('polarChart1').style.display = 'block';
+                        document.getElementById('polarChart2').style.display = 'block';
+
+                    } else {
+                        document.getElementById('detectionGEFGroupsLineChart').style.display = 'block';
+                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
+                        document.getElementById('polarChart1').style.display = 'none';
+                        document.getElementById('polarChart2').style.display = 'none';
+                    }
+                };
+                self.nowrap = ko.observable(false);
 
 
                 /* handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
@@ -178,63 +213,8 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                     /*End: Assign summary Show more/Show less */
                 };
                 /* End: handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
-               
-
-                /* polar chart - uradjen za drugu grupu i to za mesece M1, M2 i M5 */
-
-                var lineSeriesPolar1 = [{name: groups[1], items: [lineSeries1[0].items[1], lineSeries1[1].items[1], lineSeries1[2].items[1], lineSeries1[3].items[1], lineSeries1[4].items[1], lineSeries1[5].items[1]], color: '#ED6647'},
-                    {name: groups[5], items: [lineSeries1[0].items[5], lineSeries1[1].items[5], lineSeries1[2].items[5], lineSeries1[3].items[5], lineSeries1[4].items[5], lineSeries1[5].items[5]], color: '#6DDBDB'}];
-                var lineGroupsPolar1 = lineSeries1; //grupe su nazivi serija linijskog dijagrama
-
-                var lineSeriesPolar2 = [{name: groups[1], items: [lineSeries2[0].items[1], lineSeries2[1].items[1], lineSeries2[2].items[1], lineSeries2[3].items[1]], color: '#FAD55C'},
-                    {name: groups[2], items: [lineSeries2[0].items[2], lineSeries2[1].items[2], lineSeries2[2].items[2], lineSeries2[3].items[2]], color: '#8561C8'},
-                    {name: groups[5], items: [lineSeries2[0].items[5], lineSeries2[1].items[5], lineSeries2[2].items[5], lineSeries2[3].items[5]], color: '#1DDB1B'}];
-                var lineGroupsPolar2 = lineSeries2; //grupe su nazivi serija linijskog dijagrama
-
-
-
-
-                self.polarGridShapeValue1 = ko.observable();
-                self.polarChartSeriesValue1 = ko.observableArray();
-                self.polarChartGroupsValue1 = ko.observableArray();
-
-                self.polarGridShapeValue2 = ko.observable();
-                self.polarChartSeriesValue2 = ko.observableArray();
-                self.polarChartGroupsValue2 = ko.observableArray();
-
-                self.stackValue = ko.observable('off');
-                self.typeValue = ko.observable('line');
-                self.frailtyMenuItemSelect = function (event, ui) {
-                    var launcherId = ui.item.children("a").text();
-                    if (launcherId.indexOf("Morphology") !== -1) {
-                        document.getElementById('detectionGEFGroupsLineChart').style.display = 'none';
-                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'none';
-
-
-                        graphicsContentViewModel.polarGridShapeValue1('polygon');
-                        graphicsContentViewModel.polarChartSeriesValue1(lineSeriesPolar1);
-                        graphicsContentViewModel.polarChartGroupsValue1(lineGroupsPolar1);
-
-
-                        graphicsContentViewModel.polarGridShapeValue2('polygon');
-                        graphicsContentViewModel.polarChartSeriesValue2(lineSeriesPolar2);
-                        graphicsContentViewModel.polarChartGroupsValue2(lineGroupsPolar2);
-
-                        document.getElementById('polarChart1').style.display = 'block';
-                        document.getElementById('polarChart2').style.display = 'block';
-
-                    } else {
-                        document.getElementById('detectionGEFGroupsLineChart').style.display = 'block';
-                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
-                        document.getElementById('polarChart1').style.display = 'none';
-                        document.getElementById('polarChart2').style.display = 'none';
-                    }
-                };
-                self.nowrap = ko.observable(false);
-
 
                 /* detectionGEFLineChart popup manipulation*/
-
                 self.findGEFColorLineBySeriesName = function (lineChartID, seriesName) {
                     //find GEF color
                     var foundColor = "#fafafa";
