@@ -7,7 +7,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.data = ko.observableArray();
 
                 var url = sp.baseUrl + sp.receiversMethod;
-                
+
                 $.getJSON(url).
                         then(function (users) {
                             $.each(users.itemList, function () {
@@ -21,9 +21,10 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                                     det_status: this.detectionStatus,
                                     det_date: this.detectionDate,
                                     interv_status: this.interventionstatus,
-                                    interv_date: this.interventionDate
+                                    interv_date: this.interventionDate,
+                                    age: this.age
                                 });
-                                   $(".loader-hover").hide();
+                                $(".loader-hover").hide();
                             });
                         });
 
@@ -36,9 +37,13 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         });
 
 
-                     
-                self.viewGef = function (userId) {
+
+                self.viewGef = function (userId, textline, age) {
                     oj.Router.rootInstance.store(userId);
+                    sp.setUserId(userId);
+                    sp.setuserTextline(textline);
+                    sp.setuserAge(age);
+
                     oj.Router.rootInstance.go("detection_gef");
                 };
 
