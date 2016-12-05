@@ -7,12 +7,12 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 var url = sp.baseUrl + sp.groupsMethod;
                 var lineColors = ['#ea97f1', '#5dd6c9', '#b4b2b2', '#e4d70d', '#82ef46', '#29a4e4'];
 
-                var OVERALL_SERIES_NAME = 'Overall';
                 var PRE_FRAIL_SERIES_NAME = 'Pre-Frail';
                 var FRAIL_SERIES_NAME = 'Frail';
                 var FIT_SERIES_NAME = 'Fit';
-                var GROUP1_SERIES_NAME = 'Behavioural';
-                var GROUP2_SERIES_NAME = 'Contextual';
+//                var OVERALL_SERIES_NAME = 'Overall';
+//                var GROUP1_SERIES_NAME = 'Behavioural';
+//                var GROUP2_SERIES_NAME = 'Contextual';
 
                 /* tracking mouse position when do mouseover and mouseup/touchend event*/
                 var clientX;
@@ -65,6 +65,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.groupsValue = ko.observableArray();
                 self.careReceiverId = oj.Router.rootInstance.retrieve();
 
+
                 $(".loader-hover").show();
                 $.getJSON(url + "?careReceiverId=" + self.careReceiverId + "&parentFactorId=-1")
                         .then(function (radarData) {
@@ -86,6 +87,87 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         });
                 /* End Detection GEF Groups Line Chart configuration with dummy data */
 
+                /* Group 1 and Group 2 Line Chart configuration with dynamic data */
+                var gefData;
+                $.getJSON(url + "?careReceiverId=" + self.careReceiverId + "&parentFactorId=1")
+                        .then(function (behavData) {
+                            gefData = behavData;
+//                       console.log("gefData data ", JSON.stringify(gefData));    
+
+                        });
+
+                /* End: Group 1 and Group 2 Line Chart configuration with dynamic data */
+
+
+                self.lineSeriesValue = ko.observableArray();
+                self.lineSeries2Value = ko.observableArray();
+                self.groupsValue2 = ko.observableArray();
+                self.titleValue = ko.observable("");
+                self.chartDrill = function (event, ui) {
+                    var seriesValue = ui['series'];
+                    document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
+                    /* Group 1 */
+//                    var lineSeries3 = [{name: "Motility", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Physical Activity", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Basic Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Instrumental Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Socialization", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Cultural Engagement", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
+
+                    /* Group 2 */
+//                    var lineSeries4 = [{name: "Environment", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Dependence", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Health – physical", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
+//                        {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
+
+
+                    graphicsContentViewModel.groupsValue2.removeAll();
+                    graphicsContentViewModel.lineSeriesValue.removeAll();
+
+                    /* Behavioural group */
+                    if (seriesValue.indexOf("Behavioural") !== -1) {
+                        $.each(gefData.itemList, function (i, list) {
+                            if(list.parentGroupName.indexOf("Behavioural") !== -1){
+                            graphicsContentViewModel.lineSeriesValue.push({
+                                name: list.items[0].groupName,
+                                items: list.items[0].itemList,
+                                color: lineColors[i]
+                            });
+                        }
+                        });
+                        $.each(gefData.itemList[0].items[0].dateList, function (j, dateItem) {
+                            graphicsContentViewModel.groupsValue2.push(dateItem);
+                        });
+//                        graphicsContentViewModel.lineSeriesValue(lineSeries3);
+                        graphicsContentViewModel.titleValue(seriesValue+" Geriatric factors");
+                        /* Contextual group */
+                    } else if (seriesValue.indexOf("Contextual") !== -1) {
+                        $.each(gefData.itemList, function (i, list) {
+                            if(list.parentGroupName.indexOf("Contextual") !== -1){
+                            graphicsContentViewModel.lineSeriesValue.push({
+                                name: list.items[0].groupName,
+                                items: list.items[0].itemList,
+                                color: lineColors[i]
+                            });
+                        }
+                        });
+                        $.each(gefData.itemList[0].items[0].dateList, function (j, dateItem) {
+                            graphicsContentViewModel.groupsValue2.push(dateItem);
+                        });
+//                        graphicsContentViewModel.lineSeriesValue(lineSeries4);
+                        graphicsContentViewModel.titleValue(seriesValue+" Geriatric factors");
+                          /* Overall group */
+                    } else if (seriesValue.indexOf("overall") !== -1) {
+                        console.log("overall ", seriesValue);
+                          /* none group */
+                    } else {
+                        console.log("nothing ", seriesValue);
+                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'none';
+                    }
+                };
+
+
+
                 /* Group 1 and Group 2 Line Chart configuration with dummy data */
                 /* Group 1 */
                 var lineSeries1 = [{name: "Motility", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
@@ -103,43 +185,6 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 
 
                 /* End: Group 1 and Group 2 Line Chart configuration with dummy data */
-
-                self.lineSeriesValue = ko.observableArray();
-                self.lineSeries2Value = ko.observableArray();
-                self.lineGroupsValue = ko.observableArray(groups);
-
-                self.titleValue = ko.observable("");
-                self.chartDrill = function (event, ui) {
-
-                    var lineSeries3 = [{name: "Motility", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Physical Activity", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Basic Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Instrumental Activities of Daily Living", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Socialization", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Cultural Engagement", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
-
-                    /* Group 2 */
-                    var lineSeries4 = [{name: "Environment", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Dependence", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Health – physical", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5},
-                        {name: "Health – cognitive", items: [3, getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue(), getValue()], lineWidth: 3.5}];
-
-
-                    var seriesValue = ui['series'];
-                    document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
-                    if (seriesValue.indexOf("Behavioural") !== -1) {
-                        graphicsContentViewModel.lineSeriesValue(lineSeries3);
-                        graphicsContentViewModel.titleValue("Behavioural Geriatric factors");
-                    } else if (seriesValue.indexOf("Contextual") !== -1) {
-                        graphicsContentViewModel.lineSeriesValue(lineSeries4);
-                        graphicsContentViewModel.titleValue("Contextual Geriatric factors");
-                    } else if (seriesValue.indexOf("overall") !== -1) {
-                        console.log("overall ", seriesValue);
-                    } else {
-                        console.log("nothing ", seriesValue);
-                        document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'none';
-                    }
-                };
 
 
                 /* polar chart - uradjen za drugu grupu i to za mesece M1, M2 i M5 */
@@ -187,32 +232,6 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                     }
                 };
                 self.nowrap = ko.observable(false);
-
-
-                /* handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
-                self.handleAttached = function (info) {
-                    //console.log('handleAttached');                    
-
-                    /* Assign summary Show more/Show less  */
-                    $('#summary').css({height: '20px', overflow: 'hidden'});
-                    $('#showmore').on('click', function () {
-                        console.log("clicked");
-                        var $this = $("#summary");
-                        if ($this.data('open')) {
-                            $("#showmore").html("Show more");
-                            $this.animate({height: '20px'});
-                            $this.data('open', 0);
-
-                        } else {
-                            $("#showmore").html("Show less");
-                            $this.animate({height: '100%'});
-                            $this.data('open', 1);
-
-                        }
-                    });
-                    /*End: Assign summary Show more/Show less */
-                };
-                /* End: handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
 
                 /* detectionGEFLineChart popup manipulation*/
                 self.findGEFColorLineBySeriesName = function (lineChartID, seriesName) {
@@ -262,6 +281,32 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         }
                     }
                 };
+
+
+                /* handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
+                self.handleAttached = function (info) {
+                    //console.log('handleAttached');                    
+
+                    /* Assign summary Show more/Show less  */
+                    $('#summary').css({height: '20px', overflow: 'hidden'});
+                    $('#showmore').on('click', function () {
+                        console.log("clicked");
+                        var $this = $("#summary");
+                        if ($this.data('open')) {
+                            $("#showmore").html("Show more");
+                            $this.animate({height: '20px'});
+                            $this.data('open', 0);
+
+                        } else {
+                            $("#showmore").html("Show less");
+                            $this.animate({height: '100%'});
+                            $this.data('open', 1);
+
+                        }
+                    });
+                    /*End: Assign summary Show more/Show less */
+                };
+                /* End: handleAttached; Use to perform tasks after the View is inserted into the DOM., str 103 */
 
             }
             var graphicsContentViewModel = new GraphicsContentViewModel();
