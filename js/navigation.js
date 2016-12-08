@@ -15,6 +15,8 @@ define(['ojs/ojcore', 'ojs/ojarraytabledatasource'],
 
                 // Shared navigation data for Nav Bar (medium and larger screens) and Nav List (small screens)
                 var data = [
+                    {name: 'Login', id: 'login',
+                        iconClass: 'demo-home-icon-24 demo-icon-font-24 oj-navigationlist-item-icon'},
                     {name: 'Care Recipient', id: 'cr_list_full',
                         iconClass: 'demo-home-icon-24 demo-icon-font-24 oj-navigationlist-item-icon'},
 //                    {name: 'Care Recipient dummy', id: 'cr_list',

@@ -18,6 +18,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.userAge = sp.userAge;
                 self.userGender = sp.userGender;
                 self.textline = sp.userTextline;
+                
 
                 /* tracking mouse position when do mouseover and mouseup/touchend event*/
                 var clientX;
@@ -295,12 +296,12 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         console.log("clicked");
                         var $this = $("#summary");
                         if ($this.data('open')) {
-                            $("#showmore").html("Show more");
+                            $("#showmore").html("Read more");
                             $this.animate({height: '20px'});
                             $this.data('open', 0);
 
                         } else {
-                            $("#showmore").html("Show less");
+                            $("#showmore").html("Read less");
                             $this.animate({height: '100%'});
                             $this.data('open', 1);
 
@@ -313,8 +314,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
             }
             var graphicsContentViewModel = new GraphicsContentViewModel();
             return  graphicsContentViewModel;
-        }
-);
+        });
 
 
 

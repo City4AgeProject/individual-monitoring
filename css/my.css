@@ -91,3 +91,11 @@ Anagraph is a JS module (based on Oracle JET) for management of user-generated m
 #polarChart1,#polarChart2,#detectionGEFGroup1FactorsLineChart{
     display: none;
 }
+
+#test #summary {
+	height:19px ;overflow:hidden;padding-top:10px;width:60%
+}
+
+#test #summary .labels {
+	font-size: 16px
+}
