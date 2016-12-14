@@ -99,3 +99,15 @@ Anagraph is a JS module (based on Oracle JET) for management of user-generated m
 #test #summary .labels {
 	font-size: 16px
 }
+
+#filteringDate{
+    
+    width: 100%;
+    text-align: center;
+}
+
+.assesmentBtn{
+    width: 100%;
+    text-align: center; 
+    /*margin-top: 3%;*/
+}

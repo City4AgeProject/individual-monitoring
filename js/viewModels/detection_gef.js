@@ -18,7 +18,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.userAge = sp.userAge;
                 self.userGender = sp.userGender;
                 self.textline = sp.userTextline;
-                
+
 
                 /* tracking mouse position when do mouseover and mouseup/touchend event*/
                 var clientX;
@@ -43,9 +43,10 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 
                 /*filter data by date */
 
-                self.fromValue = ko.observable();
+                self.fromValue = ko.observable("");
                 self.toValue = ko.observable();
                 self.checkbox = ko.observable(false);
+
                 /* ************ */
 
                 function getValue() {
@@ -67,7 +68,9 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.seriesValue = ko.observableArray();
                 self.groupsValue = ko.observableArray();
 
-                self.careReceiverId = oj.Router.rootInstance.retrieve();
+//                self.careReceiverId = oj.Router.rootInstance.retrieve();
+
+self.careReceiverId =4;
 
                 $(".loader-hover").show();
                 $.getJSON(url + "?careReceiverId=" + self.careReceiverId + "&parentFactorId=-1")

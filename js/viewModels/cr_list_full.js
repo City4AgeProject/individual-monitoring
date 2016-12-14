@@ -8,13 +8,23 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 
                 var url = sp.baseUrl + sp.receiversMethod;
 
+
+
+
                 $.getJSON(url).
                         then(function (users) {
                             $.each(users.itemList, function () {
 //                                console.log("userssss ", JSON.stringify(this));
+                                var frailStatus;
+                                if (this.frailtyStatus === null) {
+                                    frailStatus = "pre-frail-fit";
+                                } else {
+                                    frailStatus = this.frailtyStatus;
+                                }
+
                                 self.data.push({
                                     cr_id: this.userId,
-                                    fr_status: this.frailtyStatus,
+                                    fr_status: frailStatus,
                                     fr_notice: this.frailtyNotice,
                                     textline: this.textline,
                                     attention: this.attention,
@@ -43,6 +53,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                     sp.setUserId(userId);
                     sp.setuserTextline(textline);
                     sp.setuserAge(age);
+                    console.log("userId " + userId + " Age " + age + " textline " + textline);
 
                     oj.Router.rootInstance.go("detection_gef");
                 };
