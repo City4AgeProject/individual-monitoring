@@ -70,19 +70,31 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 
 //                self.careReceiverId = oj.Router.rootInstance.retrieve();
 
-self.careReceiverId =4;
+                self.careReceiverId = 4;
+
+                function createItems(id, value) {
+                    return {id: id,
+                        value: value
+                    };
+                }
 
                 $(".loader-hover").show();
                 $.getJSON(url + "?careReceiverId=" + self.careReceiverId + "&parentFactorId=-1")
                         .then(function (radarData) {
+
 //                            console.log("fata ", JSON.stringify(radarData));
                             $.each(radarData.itemList, function (i, list) {
+                                var nodes = [];
+                                $.each(list.items[0].itemList, function (j, itemList) {
+                                    nodes.push(createItems(list.items[0].idList[j], itemList));
+                                });
                                 self.seriesValue.push({
                                     name: list.items[0].groupName,
-                                    items: list.items[0].itemList,
+                                    items: nodes,
                                     color: lineColors[i]
                                 });
                             });
+
                             $.each(radarData.itemList[0].items[0].dateList, function (j, dateItem) {
                                 self.groupsValue.push(dateItem);
                             });
@@ -92,7 +104,6 @@ self.careReceiverId =4;
                             $(".loader-hover").hide();
                         });
                 /* End Detection FGR Groups Line Chart configuration  */
-
 
                 var groups = ["Initial", "Jan 2016", "Feb 2016", "Mar 2016", "Apr 2016", "May 2016", "Jun 2016", "Jul 2016", "Avg 2016", "Sep 2016", "Oct 2016", "Nov 2016", "Dec 2016"];
 

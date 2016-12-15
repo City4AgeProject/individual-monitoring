@@ -10,7 +10,7 @@ define(['ojs/ojcore', 'knockout'], function (oj, ko) {
          */
 //        self.baseIP = "http://10.10.10.199:8080";
 //              self.baseIP = "http://c4adashboard.atc.gr/mobileapi";
-        self.baseIP = "http://localhost:8080";
+        self.baseIP = "http://localhost:8084";
         self.pathRoot = "/c4ADashboardServices/rest/careReceiversData";
         self.baseUrl = self.baseIP + self.pathRoot;
         
