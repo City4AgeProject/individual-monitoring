@@ -14,10 +14,8 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 //                var GROUP1_SERIES_NAME = 'Behavioural';
 //                var GROUP2_SERIES_NAME = 'Contextual';
 
-
-                self.userAge = sp.userAge;
-                self.userGender = sp.userGender;
-                self.textline = sp.userTextline;
+                
+            
 
 
                 /* tracking mouse position when do mouseover and mouseup/touchend event*/
@@ -68,9 +66,9 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.seriesValue = ko.observableArray();
                 self.groupsValue = ko.observableArray();
 
-//                self.careReceiverId = oj.Router.rootInstance.retrieve();
-
-                self.careReceiverId = 4;
+                self.careReceiverId = oj.Router.rootInstance.retrieve();
+                console.log(" self.careReceiverId  ", self.careReceiverId );
+//                self.careReceiverId = 4;
 
                 function createItems(id, value) {
                     return {id: id,
@@ -79,29 +77,38 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 }
 
                 $(".loader-hover").show();
+                
+              
+                
                 $.getJSON(url + "?careReceiverId=" + self.careReceiverId + "&parentFactorId=-1")
                         .then(function (radarData) {
-
+                          
+//                            console.log("data "+JSON.stringify(radarData));
+                            if (radarData.responseCode === 10) {
 //                            console.log("fata ", JSON.stringify(radarData));
-                            $.each(radarData.itemList, function (i, list) {
-                                var nodes = [];
-                                $.each(list.items[0].itemList, function (j, itemList) {
-                                    nodes.push(createItems(list.items[0].idList[j], itemList));
+                                $.each(radarData.itemList, function (i, list) {
+                                    var nodes = [];
+                                    $.each(list.items[0].itemList, function (j, itemList) {
+                                        nodes.push(createItems(list.items[0].idList[j], itemList));
+                                    });
+                                    self.seriesValue.push({
+                                        name: list.items[0].groupName,
+                                        items: nodes,
+                                        color: lineColors[i]
+                                    });
                                 });
-                                self.seriesValue.push({
-                                    name: list.items[0].groupName,
-                                    items: nodes,
-                                    color: lineColors[i]
-                                });
-                            });
 
-                            $.each(radarData.itemList[0].items[0].dateList, function (j, dateItem) {
-                                self.groupsValue.push(dateItem);
-                            });
-                            self.seriesValue.push({name: FIT_SERIES_NAME, items: [0.1, 0.1, null, null, null, null, null, null, null, null, null, null, null], color: '#008c34', lineWidth: 10, selectionMode: 'none'});
-                            self.seriesValue.push({name: PRE_FRAIL_SERIES_NAME, items: [null, null, 0.1, 0.1, 0.1, null, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], color: '#ffe066', lineWidth: 10, selectionMode: 'none'});
-                            self.seriesValue.push({name: FRAIL_SERIES_NAME, items: [null, null, null, null, 0.1, 0.1, 0.1, null, null, null, null, null, null], color: '#ff5c33', lineWidth: 10, selectionMode: 'none'});
-                            $(".loader-hover").hide();
+                                $.each(radarData.itemList[0].items[0].dateList, function (j, dateItem) {
+                                    self.groupsValue.push(dateItem);
+                                });
+                                self.seriesValue.push({name: FIT_SERIES_NAME, items: [0.1, 0.1, null, null, null, null, null, null, null, null, null, null, null], color: '#008c34', lineWidth: 10, selectionMode: 'none'});
+                                self.seriesValue.push({name: PRE_FRAIL_SERIES_NAME, items: [null, null, 0.1, 0.1, 0.1, null, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], color: '#ffe066', lineWidth: 10, selectionMode: 'none'});
+                                self.seriesValue.push({name: FRAIL_SERIES_NAME, items: [null, null, null, null, 0.1, 0.1, 0.1, null, null, null, null, null, null], color: '#ff5c33', lineWidth: 10, selectionMode: 'none'});
+                                $(".loader-hover").hide();
+
+                            } else {
+                                $(".loader-hover").hide();
+                            }
                         });
                 /* End Detection FGR Groups Line Chart configuration  */
 

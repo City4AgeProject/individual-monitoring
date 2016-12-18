@@ -1,5 +1,5 @@
 
-define(['ojs/ojcore', 'knockout'], function (oj, ko) {
+define(['ojs/ojcore', 'knockout','jquery'], function (oj, ko,$) {
     /**
      * The shared view model for navigation
      */
@@ -8,20 +8,20 @@ define(['ojs/ojcore', 'knockout'], function (oj, ko) {
         /**
          * Define base Url settings
          */
-//        self.baseIP = "http://10.10.10.199:8080";
+        self.baseIP = "http://10.10.10.199:8080";
 //              self.baseIP = "http://c4adashboard.atc.gr/mobileapi";
-        self.baseIP = "http://localhost:8084";
+//        self.baseIP = "http://localhost:8084";
         self.pathRoot = "/c4ADashboardServices/rest/careReceiversData";
         self.baseUrl = self.baseIP + self.pathRoot;
-        
-       
-        
+
+
+
         /**
          * Define methods
          */
         self.receiversMethod = "/getCareReceivers";
         self.groupsMethod = "/getGroups";
-         self.loginMethod = "/login";
+        self.loginMethod = "/login";
 
         self.userId = ko.observable();
         self.setUserId = function (userId) {
@@ -43,10 +43,10 @@ define(['ojs/ojcore', 'knockout'], function (oj, ko) {
             getUrl.userAge = userAge;
         };
 
-        self.setStorageData = function (username,userfullname) {
+        self.setStorageData = function (username, userfullname) {
             sessionStorage.setItem("username", username);
 //            sessionStorage.setItem("userfullname", "Dr Leonardo Mutti");
-              sessionStorage.setItem("userfullname", userfullname);
+            sessionStorage.setItem("userfullname", userfullname);
         };
         // Retrieve the JSON data string from browser session storage
         self.getStorageData = function () {
@@ -66,6 +66,9 @@ define(['ojs/ojcore', 'knockout'], function (oj, ko) {
 
             return isStored;
         };
+
+
+
 
     }
     var getUrl = new getUrls();

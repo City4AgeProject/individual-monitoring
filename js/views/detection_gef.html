@@ -4,12 +4,12 @@
 
     <div style="width:70%" class="oj-flex-item" align="left">
         <span style="font-size: 16px">Care recipient: <span  data-bind="text: oj.Router.rootInstance.retrieve()"></span></span> 
-        <span style="font-size: 16px;padding-left: 20px;">Age: <span  data-bind="text: userAge"></span></span> 
+        <span style="font-size: 16px;padding-left: 20px;">Age: <span  data-bind="text: $root.age"></span></span> 
         <!--<span>Gender: <b  data-bind="text: userGender"></b></span>--> 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <span style="font-size: 16px">Assign Geriatrician: <span data-bind="text:$root.userLogin" > </span></span> <!--class="oj-header-border"-->
         <br>                     
-        <div style="height:19px;overflow:hidden;padding-top:10px;width:60%" id="summary"><span style="font-size: 16px">Summary:</span> <span data-bind="text:textline"></span></div>
+        <div style="height:19px;overflow:hidden;padding-top:10px;width:60%" id="summary"><span style="font-size: 16px">Summary:</span> <span data-bind="text:$root.textline"></span></div>
     </div>
     <div style="text-align: center">
         <a href="#" id="showmore" style="color: #0fb5b5 ">Show more</a>

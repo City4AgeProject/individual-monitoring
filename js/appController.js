@@ -4,7 +4,7 @@
  */
 define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrouter', 'ojs/ojdialog',
     'ojs/ojoffcanvas', 'ojs/ojknockout'],
-        function (oj, ko, nav, sp) {
+        function (oj, ko, nav, sp,det) {
             /*
              * Your application specific code will go here
              */
@@ -69,8 +69,11 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrou
                     console.log(" user is not logged in");
                     oj.Router.rootInstance.go("login");
                 }
-
-
+                
+               
+                self.age = ko.observable("");
+                self.textline = ko.observable("");
+              
                 // Dropdown menu states
                 self.menuItemSelect = function (event, ui) {
                     switch (ui.item.attr("id")) {

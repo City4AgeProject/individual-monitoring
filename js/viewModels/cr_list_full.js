@@ -1,5 +1,5 @@
-define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'ojs/ojgauge', 'ojs/ojarraytabledatasource'],
-        function (oj, ko, sp, $)
+define(['ojs/ojcore', 'knockout', 'setting_properties', 'appController', 'jquery', 'ojs/ojknockout', 'ojs/ojtable', 'ojs/ojrowexpander', 'ojs/ojgauge', 'ojs/ojarraytabledatasource'],
+        function (oj, ko, sp, app, $)
         {
 
             function ListViewModel() {
@@ -7,9 +7,6 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                 self.data = ko.observableArray();
 
                 var url = sp.baseUrl + sp.receiversMethod;
-
-
-
 
                 $.getJSON(url).
                         then(function (users) {
@@ -39,6 +36,7 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                         });
 
 
+                console.log("data ", self.data());
 
                 self.dataSource = new oj.ArrayTableDataSource(
 //                        data, {
@@ -46,6 +44,35 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
                             idAttribute: "cr_id"
                         });
 
+
+
+                self.listMenuItemSelect = function (event, ui) {
+                    var currentRow = $('#table').ojTable('option', 'currentRow');
+//                    console.log("currentRow ", currentRow);
+                    var selectData = self.data()[currentRow['rowIndex']];
+                    console.log("id " + selectData['cr_id'] + " age " + selectData['age']);
+
+                    switch (ui.item.attr("id")) {
+                        case "view_more_det":
+                            oj.Router.rootInstance.store(selectData['cr_id']);
+                            oj.Router.sync();
+
+//                            sp.setUserId(selectData['cr_id']);
+                            sp.setuserTextline(selectData['textline']);
+//                            sp.setuserAge(selectData['age']);
+
+                            app.age(selectData['age']);
+                            app.textline(selectData['textline']);
+
+                            oj.Router.rootInstance.go("detection_gef");
+
+                            break;
+                        case "view_inter_sum":
+                            console.log("clicked");
+                            break;
+                        default:
+                    }
+                };
 
 
                 self.viewGef = function (userId, textline, age) {
@@ -81,8 +108,6 @@ define(['ojs/ojcore', 'knockout', 'setting_properties', 'jquery', 'ojs/ojknockou
 //                    }
 
                 };
-
-
             }
 
             return new ListViewModel();
