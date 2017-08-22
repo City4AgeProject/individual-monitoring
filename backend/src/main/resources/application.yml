@@ -1,0 +1,38 @@
+server:
+  context-path: /C4A-dashboard
+logging:
+  level:
+    org:
+      hibernate: INFO
+      springframework:
+        web: INFO
+  config: classpath:log4j2.yml
+spring:
+  jersey:
+    application-path: /C4A-dashboard/rest
+  main:
+    web-environment: true
+    banner-mode: 'off'
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    generate-ddl: true
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+        cache.use_second_level_cache: false
+        cache.use_query_cache: false
+      javax:
+        persistence:
+          sharedCache:
+            mode: ALL
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /rest/swagger.json

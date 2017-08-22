@@ -1,0 +1,28 @@
+{
+	"name": "anagraph-assessment-view",
+	"version": "1.0.0",
+	"jetVersion": ">=3.0.0",
+	"properties": {
+		"title": {
+			"type": "object"
+		},
+		"legend": {
+			"type": "object"
+		},
+		"careRecipientId": {
+			"type": "number"
+		},
+		"parentFactorId": {
+			"type": "number"
+		},
+		"series": {
+			"type": "Array<object>"
+		},
+		"groups": {
+			"type": "Array<object>"
+		},
+		"drilling": {
+			"type": "string"
+		}
+	}
+}

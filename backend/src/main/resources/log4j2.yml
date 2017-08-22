@@ -1,0 +1,35 @@
+Configuration:
+  status: info
+  
+  appenders:
+  
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "[console] %d %p %C{1.} [%t] %m%n"
+        
+    File:
+      name: File
+      fileName: ${sys:com.sun.aas.instanceRoot}/logs/server.log
+      PatternLayout:
+        Pattern: "[C4A-dashboard] %d %p %C{1.} [%t] %m%n"
+ 
+  Loggers:
+    logger:
+      -
+        name: org.springframework.web
+        level: info
+        additivity: false
+        ThreadContextMapFilter:
+        AppenderRef:
+          ref: STDOUT
+        AppenderRef:
+          ref: File
+          
+    Root:
+      level: info
+      AppenderRef:
+        ref: STDOUT
+      AppenderRef:
+        ref: File

@@ -1,0 +1,130 @@
+<meta charset="utf-8">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+
+<style>
+a:link {
+	color: #3C9DBC;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #3C9DBC;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #3C9DBC;
+	text-decoration: underline;
+}
+</style>
+
+<div id='dges-container'>
+
+	<!-- CR info -->
+	<div class="oj-panel oj-panel-shadow-sm"
+		style="border: none; background-color: #fcfcfc">
+		<span>
+		  <span style="font-size: 16px" data-bind="text: careRecipientLabel">
+		  </span>
+		  <b> 
+		    <span style="font-size: 16px" data-bind="text: oj.Router.rootInstance.retrieve()[0]">
+		    </span> 
+		  </b>
+		  <span style="font-size: 16px; padding-left: 20px;" data-bind="text: ageLabel">
+		  </span> 
+		  <b>
+		    <span data-bind="text: userAge">
+		    </span>
+		  </b>
+		  <span style="font-size: 16px; padding-left: 20px;" data-bind="text: genderLabel">
+		  </span> 
+		  <b>
+		    <span style="font-size: 16px;">male</span>
+		  </b>
+		</span>
+		<span>
+	    <span style="font-size: 16px; padding-left: 20px;" data-bind="text: assignGeriatricianLabel"></span>
+		  <b><span data-bind="text: $root.userLogin"></span></b>
+		</span>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		
+		<!--class="oj-header-border"-->
+		<div style="height: 20px; overflow: hidden; font-size: 16px; margin-top:5px" id="summary">
+			<b><span data-bind="text: summaryLabel"></span></b>
+			<span data-bind="text:textline"></span>
+		</div>
+		<br>
+		<a href="#" id="showmore" data-bind="text: readMoreLabel"></a>
+	</div>
+	<!-- end CR info -->
+</div>
+
+<!-- main graph panel -->
+<div class="oj-panel oj-panel-shadow-sm"
+	style="border: none; background-color: #fcfcfc">
+	<div class="demo-flex-display oj-flex-items-pad">
+		<div class="oj-flex oj-sm-flex-direction-column">
+			<div class="oj-flex-item">
+				<br>
+			</div>
+			<div class="oj-flex-item">
+				<div class="oj-flex oj-lg-align-items-flex-end">
+					<div class="oj-flex-item">
+						<!-- choose GEF combo box -->
+						<div id="searchGEF" style="width: 280px">
+							<span style="margin-right: 10px;" data-bind="">Select GEF:</span> <input
+								id="combobox1"
+								data-bind="ojComponent: {
+	                            component: 'ojSelect',
+	                            options:[{label : 'Behavioural', 
+	                                    children: [{value: 'motility', label: 'Motility'}, 
+	                                            {value: 'physicalactivity', label: 'Physical Activity'},
+	                                            {value: 'basicactivities', label: 'Basic Activities of Daily Living'},
+	                                            {value: 'instrumentalactivities', label: 'Instrumental Activities of Daily Living'},
+	                                            {value: 'socialization', label: 'Socialization'},
+	                                            {value: 'culturalengagement', label: 'Cultural Engagement'}]}, 
+	                                    {label: 'Contextual', 
+	                                    children: [{value: 'environment', label: 'Environment'},
+	                                            {value: 'dependence', label: 'Dependence'},
+	                                            {value: 'healthphysical', label: 'Health – physical'},
+	                                            {value: 'healthcognitive', label: 'Health – cognitive'}]}],
+	                                    rootAttributes: {style:'max-width:100%'}
+	                        }">
+						</div>
+						<!-- end choose GEF combo box -->
+					</div>
+					<div class="oj-flex-item">
+						<!-- period combo box -->
+						<div id="choosePeriod" style="width: 100px">
+							<span style="margin-right: 10px;">Period:</span> <input
+								id="combobox2" list="periods"
+								data-bind="ojComponent: {component: 'ojSelect', 
+	                                            value: val,
+	                                            rootAttributes: {style:'max-width:100%'}}
+	                                   " />
+							<datalist id="periods">
+								<option value="Month">Month</option>
+								<option value="Quarter">Quarter</option>
+								<option value="Semester">Semester</option>
+								<option value="Year">Year</option>
+							</datalist>
+						</div>
+						<!-- end period combo box -->
+					</div>
+				</div>
+			</div>
+
+			<anagraph-assessment-view id="detectionGEFGroup1FactorsLineChart"
+				care-recipient-id="{{careRecipient}}"
+				parent-factor-id="{{parentFactor}}" 
+				series="{{seriesVal}}"
+				groups="{{groupsVal}}" 
+				title="{{titleObj}}"
+				legend='{"position":"top"}' 
+				drilling='off' style="display: block" />
+
+		</div>
+	</div>
+</div>

@@ -1,0 +1,167 @@
+<style>
+
+.popup {
+	opacity:0.9;
+	transition: opacity 0.2s;
+	-webkit-transition: opacity 0.2s;
+}
+.popup:hover{
+	opacity:1;
+}
+#addAnotation {
+	display: block;
+	text-align: center;
+}
+#popup-text {
+	opacity: 1;
+}
+#popup-text:hover {
+	opacity: 1;
+}
+
+.message
+{
+    text-align: center;
+    margin-bottom: 6px;
+    width:50%;
+}
+
+.message .link
+{
+
+    padding: 2px;
+    white-space: nowrap;
+
+    display: inline;
+    display: inline-block;
+}
+
+</style>
+
+<div style="display:none;" id="popup1" class="popup"
+     data-bind="ojComponent:{
+     				component: 'ojPopup',
+           			rootAttributes: {style:'width: 360px;height:330px;'}
+                              }">
+    <div class="demo-flex-display oj-flex-items-pad">
+        <div class="oj-flex oj-sm-flex-direction-column">
+            <div class="oj-flex-item">
+                <h3><span data-bind="text: dataPointsMarked">&nbsp;</span></h3>
+                <button id="btnClose" class="oj-panel-remove-button" 
+                        data-bind="
+                                    ojComponent: {
+                                      component: 'ojButton', 
+                                      chroming: 'half',
+                                      display: 'icons', 
+                                      icons: {end: 'oj-panel-remove-icon'}, 
+                                      label: 'remove'},
+                                      click: function() {$('#popup1').ojPopup('close', '#btnClose');}  ">
+                </button>
+            </div>
+            <div class="oj-flex-item oj-dialog-body" style="height:176px;">
+                <!-- ko foreach: props.selectedAssessments -->
+                <div class="oj-flex oj-sm-flex-direction-column" >
+                    <div class="oj-flex-item" id="popup-text" style="border-bottom: 1px solid #e6e6e6; padding: 5px 10px 5px 10px;">
+                        <img data-bind="attr: { src: riskStatusImage, title: riskStatusDesc }" style="vertical-align:bottom; width: 20px; height: 20px;"/> 
+                        <b><span data-bind="text: $data.riskStatusDesc"> </span></b>
+          
+                <span data-bind="text: $parent.fromLabel"></span>
+
+                          <b><span data-bind="text: $data.from"> </span></b>
+                          <br>
+                        <span data-bind="text: $data.shortComment"> </span>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item" style="height:10px">
+            </div>
+            <div class="oj-flex-item oj-flex-items-pad">
+                <div class="oj-flex">
+                    <div class="oj-flex-item message" >
+                        <a class="link" href="#" id="addAnnotation" data-bind="click: clickShowPopupAddAssessment">
+                            <img src="images/comment_add.png" style="vertical-align:middle; width: 16px; height: 16px;"/>
+                            <span  data-bind="text: addAnnotationLabel"></span>
+                        </a>
+                    </div>
+                    <div class="oj-flex-item message" align="right">
+                        <a class="link" href="#">
+                            <img src="images/comment_view.png" style="vertical-align:middle; width: 16px; height: 16px;"/>
+                            <span data-bind="text: viewAnnotationsLabel "></span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>                    
+            <div class="oj-flex-item oj-flex-items-pad">
+                <div class="oj-flex">
+                    <div class="oj-flex-item message">
+                        <a class="link" href="#">
+                            <img src="images/view.png" style="vertical-align:middle; width: 16px; height: 16px;"/>
+                            <span data-bind="text: viewDailyMeasuresLabel "></span>
+                        </a> 
+                    </div>
+                    <div class="oj-flex-item message" align="right">
+                        <a class="link" href="#">
+                            <img src="images/view.png" style="vertical-align:middle; width: 16px; height: 16px;"/>
+                            <span data-bind="text: viewNuisLabel "></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="oj-flex-item" style="height:10px"/>
+    </div>
+</div>
+
+<div style="display:none;" id="popup2" class="popup"
+     data-bind="ojComponent:{component: 'ojPopup',
+                               rootAttributes: {style:'width:320px;height:320px;'}
+                              }">
+    <div class="demo-flex-display oj-flex-items-pad">
+        <div class="oj-flex oj-sm-flex-direction-column">
+            <div class="oj-flex-item">
+                <h3><span data-bind="text: dataPointsMarked">&nbsp;</span></h3>
+                <button id="btnClose" class="oj-panel-remove-button" 
+                        data-bind="
+                                    ojComponent: {
+                                      component: 'ojButton', 
+                                      chroming: 'half',
+                                      display: 'icons', 
+                                      icons: {end: 'oj-panel-remove-icon'}, 
+                                      label: 'remove'},
+                                      click: function() {$('#popup2').ojPopup('close', '#btnClose');
+                                      					}  ">
+                </button>
+            </div>
+            <div class="oj-flex-item oj-dialog-body" style="height:176px;">
+                <!-- ko foreach: $props.selectedAssessments -->
+                <div class="oj-flex oj-sm-flex-direction-column"  >
+                    <div class="oj-flex-item" style="border-bottom: 1px solid #e6e6e6; padding: 5px 10px 5px 10px;">
+                        <img data-bind="attr: { src: riskStatusImage, title: riskStatusDesc }" style="vertical-align:bottom; width: 20px; height: 20px;"/> 
+                        <b><span data-bind="text: $data.riskStatusDesc"> </span></b> from <b><span data-bind="text: $data.from"> </span></b><br>
+                        <span data-bind="text: $data.shortComment"> </span>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item" style="height:10px">
+            </div>
+            <div class="oj-flex-item oj-flex-items-pad">
+                <div class="oj-flex">
+                    <div class="oj-flex-item">
+                    
+                        <a  id="addAnotation" href="#"  data-bind="click: clickShowPopupAddAssessment">
+                            <img src="images/comment_add.png" style="vertical-align:middle; width: 16px; height: 16px;"/>
+                            <span data-bind="text: addAnnotationLabel"></span>
+                        </a>
+                 
+                    </div>
+                  
+                </div>
+            </div>                    
+           
+        </div>
+        <div class="oj-flex-item" style="height:10px"/>
+    </div>
+</div>
