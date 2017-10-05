@@ -1,5 +1,5 @@
-# individual-monitoring-Belit
-Individual monitoring dashboard app, Belit version with Hibernate ORM and support for assessments. 
+# individual-monitoring
+Individual monitoring dashboard app, Project version with Hibernate ORM and support for assessments. 
 
 Deployment on Glassfish instructions:
 
