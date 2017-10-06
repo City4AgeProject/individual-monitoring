@@ -24,13 +24,13 @@ import eu.city4age.dashboard.api.pojo.json.view.View;
 
 @Entity
 @Table(name = "user_in_role")
-public class UserInRole extends AbstractBaseEntity {
+public class UserInRole extends AbstractBaseEntity<Long> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1957422483462322553L;
-
+	
 	@Column(name = "pilot_code")
 	private String pilotCode;
 
@@ -47,7 +47,7 @@ public class UserInRole extends AbstractBaseEntity {
 	@JoinColumn(name = "user_in_system_id")
 	private UserInSystem userInSystem;
 
-	@Column(name = "cd_role_id")
+	@Column(name = "role_id")
 	private Short roleId;
 
 	@JsonManagedReference
@@ -76,14 +76,6 @@ public class UserInRole extends AbstractBaseEntity {
 		this.crProfile = crProfile;
 		this.careProfile = careProfile;
 		this.frailtyStatusTimeline = frailtyStatusTimeline;
-	}
-
-	public String getPilotCode() {
-		return this.pilotCode;
-	}
-
-	public void setPilotCode(String pilotCode) {
-		this.pilotCode = pilotCode;
 	}
 
 	public void setValidFrom(Date validFrom) {
@@ -140,6 +132,14 @@ public class UserInRole extends AbstractBaseEntity {
 
 	public void setFrailtyStatusTimeline(Set<FrailtyStatusTimeline> frailtyStatusTimeline) {
 		this.frailtyStatusTimeline = frailtyStatusTimeline;
+	}
+
+	public String getPilotCode() {
+		return pilotCode;
+	}
+
+	public void setPilotCode(String pilotCode) {
+		this.pilotCode = pilotCode;
 	}
 
 }

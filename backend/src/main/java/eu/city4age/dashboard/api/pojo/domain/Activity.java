@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="activity")
-public class Activity extends AbstractBaseEntity {
+public class Activity extends AbstractBaseEntity<Long> {
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class Activity extends AbstractBaseEntity {
 	private DataSourceType cdDataSourceType;
 	
 	@ManyToOne
-    @JoinColumn(name="time_interval_id")
+    @JoinColumn(name="time_interval_id", referencedColumnName = "id")
 	private TimeInterval timeInterval;
 	
 	@Column(name="user_in_role_id")

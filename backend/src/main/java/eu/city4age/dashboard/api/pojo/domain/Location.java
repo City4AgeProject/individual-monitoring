@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="location")
-public class Location extends AbstractBaseEntity {
+public class Location extends AbstractBaseEntity<Long> {
 
     /**
 	 * 
@@ -23,7 +23,7 @@ public class Location extends AbstractBaseEntity {
 	private static final long serialVersionUID = 3078496828665625658L;
 
 	@ManyToOne
-    @JoinColumn(name="pilot_id")
+    @JoinColumn(name="pilot_code")
 	private Pilot pilot;
 
     @Column(name="location_name")

@@ -1,36 +1,12 @@
 define(
-		[ 'ojs/ojcore', 'knockout', 'jquery', 'knockout-postbox', 'urls',
+		[ 'ojs/ojcore', 'knockout', 'jquery', 'urls',
 				'entities', 'add-assessment', 'assessments-list', 'assessments-preview' ],
 
 function(oj, ko, $) {
 
 	function model(context) {
 		var self = this;
-		
-		
-		
-		self.annotationsLabel = oj.Translations.getTranslatedString("annotations_assessments")[0].toUpperCase()
-			+ oj.Translations.getTranslatedString("annotations_assessments").substring(1);
-		self.morphologyLabel = oj.Translations.getTranslatedString("morphology");
-		self.annotations_assessmentsLabel = oj.Translations.getTranslatedString("annotations_assessments");
-		self.addLabel = oj.Translations.getTranslatedString("add");
-		self.riskDataTypeLabel = oj.Translations.getTranslatedString("risk_data_type");
-		
-		self.showAllLabel = oj.Translations.getTranslatedString("show_all"); 
-		self.fromLabel = oj.Translations.getTranslatedString("from");
-		self.fromLabel = self.fromLabel.charAt(0).toUpperCase() + self.fromLabel.slice(1);
-		self.sortLabel = oj.Translations.getTranslatedString("sort_by");
-		self.resetToDefaultsLabel = oj.Translations.getTranslatedString("reset_to_defaults");  
-		self.filterLabel = oj.Translations.getTranslatedString("filter");  
-		
-		self.dateAscLabel = oj.Translations.getTranslatedString("date_asc");
-	    self.dateDescLabel = oj.Translations.getTranslatedString("date_desc");
-	    self.authorNameAscLabel = oj.Translations.getTranslatedString("author_name_asc");
-	    self.authorNameDescLabel = oj.Translations.getTranslatedString("author_name_desc");
-	    self.authorRoleAscLabel = oj.Translations.getTranslatedString("author_role_asc");
-	    self.authorRoleDescLabel = oj.Translations.getTranslatedString("author_role_desc");
-	    self.typeLabel = oj.Translations.getTranslatedString("type");
-	    
+
 		self.series = ko.observableArray();
 		self.groups = ko.observableArray();
 		self.title = ko.observable();
@@ -38,10 +14,8 @@ function(oj, ko, $) {
 		self.drilling = ko.observable();
 
 		self.highlightValue = ko.observable();
-		
-		self.optionChangeCallback = null;
-		self.assessmentId = ko.observable();
-		self.subFactorName = ko.observable();
+
+		self.dataPointsMarked = ko.observable('No data points marked.');
 
 		self.showSelectionOnDiagram = ko.observable(false);
 
@@ -50,7 +24,7 @@ function(oj, ko, $) {
 		self.selectedAnotations = ko.observableArray([]);
 
 		self.nowrap = ko.observable(false);
-		
+
 	    self.risksTags = ko.observableArray([
        	 	{value: 'A', label: oj.Translations.getTranslatedString('alert_data'), imagePath: 'images/risk_alert.png'},
             {value: 'W', label: oj.Translations.getTranslatedString('warning_data'), imagePath: 'images/risk_warning.png'},
@@ -85,7 +59,26 @@ function(oj, ko, $) {
 
 		var selected = [];
 
-		self.selectedItemsValue = ko.observableArray(selected);
+		self.annotationsLabel = oj.Translations.getTranslatedString("annotations_assessments")[0].toUpperCase() + oj.Translations.getTranslatedString("annotations_assessments").substring(1);
+		self.morphologyLabel = oj.Translations.getTranslatedString("morphology");
+		self.annotations_assessmentsLabel = oj.Translations.getTranslatedString("annotations_assessments");
+		self.addLabel = oj.Translations.getTranslatedString("add");
+		self.riskDataTypeLabel = oj.Translations.getTranslatedString("risk_data_type");
+		
+		self.showAllLabel = oj.Translations.getTranslatedString("show_all"); 
+		self.fromLabel = oj.Translations.getTranslatedString("from");
+		self.fromLabel = self.fromLabel.charAt(0).toUpperCase() + self.fromLabel.slice(1);
+		self.sortLabel = oj.Translations.getTranslatedString("sort_by");
+		self.resetToDefaultsLabel = oj.Translations.getTranslatedString("reset_to_defaults");  
+		self.filterLabel = oj.Translations.getTranslatedString("filter");  
+		
+		self.dateAscLabel = oj.Translations.getTranslatedString("date_asc");
+	    self.dateDescLabel = oj.Translations.getTranslatedString("date_desc");
+	    self.authorNameAscLabel = oj.Translations.getTranslatedString("author_name_asc");
+	    self.authorNameDescLabel = oj.Translations.getTranslatedString("author_name_desc");
+	    self.authorRoleAscLabel = oj.Translations.getTranslatedString("author_role_asc");
+	    self.authorRoleDescLabel = oj.Translations.getTranslatedString("author_role_desc");
+	    self.typeLabel = oj.Translations.getTranslatedString("type");
 
 		var role = new oj.Collection.extend({
 			url : CODEBOOK_SELECT_ROLES_FOR_STAKEHOLDER + "/GRS",
@@ -116,37 +109,41 @@ function(oj, ko, $) {
 		});
 
 		self.chartOptionChange = function(event, ui) {
-			if (ui['option'] === 'selection') {
-				if (!self.showSelectionOnDiagram()) {
-					if (ui['value'].length > 0) {
-						//$('#popup1').ojPopup();
-					//	if ($('#popup1').ojPopup("isOpen"))
-					//		$('#popup1').ojPopup('close');
-						var onlyDataPoints = [];
-						onlyDataPoints = getDataPoints(ui['optionMetadata']);
-						if (onlyDataPoints.length === 0) {
-							for (var i = 0; i < ui['value'].length; i++) {
-								onlyDataPoints.push(ui['value'][i].id);
+			if(ui !== undefined) {
+				if (ui['option'] === 'selection') {
+					if (!self.showSelectionOnDiagram()) {
+						if (ui['value'].length > 0) {
+							//$('#popup1').ojPopup();
+						//	if ($('#popup1').ojPopup("isOpen"))
+						//		$('#popup1').ojPopup('close');
+							var onlyDataPoints = [];
+							onlyDataPoints = getDataPoints(ui['optionMetadata']);
+							if (onlyDataPoints.length === 0) {
+								for (var i = 0; i < ui['value'].length; i++) {
+									onlyDataPoints.push(ui['value'][i].id);
+								}
+							} else if (onlyDataPoints.length === 1
+									&& onlyDataPoints[0][0]
+									&& onlyDataPoints[0][0].id) {
+								refreshDataPointsMarked(1);
+							} else {
+								// Compose selections in get query
+								// parameters
+								self.queryParams = calculateSelectedIds(onlyDataPoints);
+								loadAssessments(self.queryParams);
 							}
-						} else if (onlyDataPoints.length === 1
-								&& onlyDataPoints[0][0]
-								&& onlyDataPoints[0][0].id) {
-							ko.postbox.publish("refreshDataPointsMarked", 1);
+
+							showAssessmentsPopup();
+	
+							$('#addAssessment').prop('dataPointsMarkedIds', onlyDataPoints);
+	
+
 						} else {
-							// Compose selections in get query
-							// parameters
-							self.queryParams = calculateSelectedIds(onlyDataPoints);
-							loadAssessments(self.queryParams);
+							self.dataPointsMarkedIds = [];
 						}
-						showAssessmentsPopup();
-
-						$('#addAssessment').prop('dataPointsMarkedIds', onlyDataPoints);
-
 					} else {
-						self.dataPointsMarkedIds = [];
+						self.showSelectionOnDiagram(false);
 					}
-				} else {
-					self.showSelectionOnDiagram(false);
 				}
 			}
 		};
@@ -178,11 +175,8 @@ function(oj, ko, $) {
 					&& self.props.series !== undefined) {
 				for (var ig = 0; ig < Object.keys(self.props.series).length; ig++) {
 					self.props.series[ig].name = oj.Translations.getTranslatedString(self.props.series[ig].name);
-					
 				}
 			}
-			
-			
 		};
 
 		var loadDataSet = function(data) {
@@ -262,11 +256,11 @@ function(oj, ko, $) {
 		// This works only for GES!
 		self.bindingsApplied = function() {
 			selected = [];
-			self.selectedItemsValue(selected);
+			self.props.selectedItemsValue = selected;
 
-			self.subFactorName("testtest");
+			self.props.subFactorName = "testtest";
 
-			self.optionChangeCallback = self.chartOptionChange;
+			self.chartOptionChange();
 
 			self.loadAssessmentsCached();
 
@@ -280,8 +274,7 @@ function(oj, ko, $) {
 										.keys(self.props.series[ig].items[jg].assessmentObjects).length > 0) {
 							for (var kg = 0; kg < Object
 									.keys(self.props.series[ig].items[jg].assessmentObjects).length; kg++) {
-								if (self.props.series[ig].items[jg].assessmentObjects[kg].id === self
-										.assessmentId()) {
+								if (self.props.series[ig].items[jg].assessmentObjects[kg].id === self.props.assessmentId()) {
 									selected
 											.push(self.props.series[ig].items[jg].assessmentObjects[kg].gefId
 													.toString());
@@ -290,7 +283,7 @@ function(oj, ko, $) {
 						}
 					}
 				}
-				self.selectedItemsValue(selected);
+				self.props.selectedItemsValue = selected;
 			}
 		};
 		
@@ -299,7 +292,37 @@ function(oj, ko, $) {
 		};
 
 		self.chartDrill = function(event, ui) {
-			ko.postbox.publish("chartDrillGEF", ui);
+			console.log('drill on anagraph-assessment-view');
+
+            var seriesVal = ui['series'];            
+					
+            self.props.selectedId = JSON.stringify(ui['seriesData']['items'][0]['gefTypeId']);
+            
+            //if subfaktor lineseries is clicked, transfer to detection_mea page
+            if(self.props.selectedId > 513){
+            	console.log('bigger than 513');            	
+            	oj.Router.rootInstance.store([self.props.careRecipientId, self.props.selectedId]);
+                oj.Router.rootInstance.go("detection_mea");
+            	return;
+            }
+            
+            self.props.titleValue = seriesVal + "Geriatric factors";
+
+            self.props.parentFactorId = ui['seriesData'].items[0].gefTypeId;
+            
+            document.getElementById('detectionGEFGroup1FactorsLineChart').style.visibility = 'visible';
+            document.getElementById('detectionGEFGroup1FactorsLineChart').style.display = 'block';
+
+            
+            console.log('seriesVal = ' + seriesVal);
+            console.log('selectedID = ' + self.props.selectedId);
+            console.log('titleValue = ' + self.props.titleValue);
+            console.log('parentFactorId = ' + self.props.parentFactorId);
+         
+            
+
+			self.bGotoGESClick();
+
 		}
 
 		/*
@@ -345,14 +368,12 @@ function(oj, ko, $) {
 		}
 
 		self.loadAssessmentsCached = function() {
-			return $
-					.getJSON(
-							ASSESSMENT_LAST_FIVE_FOR_DIAGRAM
+			return $.getJSON(ASSESSMENT_LAST_FIVE_FOR_DIAGRAM
 									+ '/userInRoleId/'
 									+ self.props.careRecipientId
 									+ '/parentDetectionVariableId/'
 									+ self.props.parentFactorId
-									+ '/intervalStart/2011-1-1/intervalEnd/2017-1-1',
+									+ '/intervalStart/2001-1-1/intervalEnd/2040-1-1',
 							function(dataSet) {
 								var assesmentsDataSet = DataSet
 										.produceFromOther(dataSet);
@@ -461,8 +482,7 @@ function(oj, ko, $) {
 						}
 
 						self.selectedAnotations(assessmentsResult);
-						ko.postbox.publish("refreshDataPointsMarked",
-								assessmentsResult.length);
+						refreshDataPointsMarked(assessmentsResult.length);
 
 					});
 		};
@@ -544,36 +564,6 @@ function(oj, ko, $) {
 							}
 
 						});*/
-		
-	/*CAN BE DELETED
-	 * 	$(window).scroll(
-				function() {
-
-					var height = $(window).scrollTop();
-					var id = '#' + $('.popup').attr('id');
-					var offset = $(id).offset();
-					var xPos = offset.left;
-					var yPos = offset.top;
-					var wasOpen;
-					var autoClose;
-					var d = document.getElementById("detectionGEFGroup1FactorsLineChart");
-					if($(id).ojPopup("isOpen")){
-						wasOpen=true;
-					}else{
-						wasOpen=false;
-					}
-
-					if (( (height > (d.offsetTop + 120))
-							|| (height < (d.offsetTop - 120)) ) && wasOpen ) {
-						$(id).ojPopup('close');
-					} else if ( (height <= (d.offsetTop + 120)) && (height > (d.offsetTop - 120))
-							&& wasOpen ) {
-						$(id).ojPopup('open');
-					}
-
-				} );*/
-		
-		
 
 		var filterAssessments = function(pointIds,
 				checkedFilterValidityData) {
@@ -591,8 +581,7 @@ function(oj, ko, $) {
 						assessmentsResult.push(newAssessment);
 				}
 				self.selectedAnotations(assessmentsResult);
-				ko.postbox.publish("refreshDataPointsMarked",
-						assessmentsResult.length);
+				refreshDataPointsMarked(assessmentsResult.length);
 			});
 		};
 
@@ -672,22 +661,13 @@ function(oj, ko, $) {
 	
 		}
 
-		ko.postbox.subscribe("loadAssessmentsCached", function(param) {
-			selected = [];
-			self.selectedItemsValue(selected);
-
-			self.subFactorName("testtest");
-
-			self.optionChangeCallback = self.chartOptionChange;
-
-			self.loadAssessmentsCached();
-		});
-
 		self.selectDatapointsDiagram = function() {
 			self.showSelectionOnDiagram(true);
-			self.selectedItemsValue(selected);
-			self.subFactorName("testtest");
-			self.optionChangeCallback = self.chartOptionChange;
+
+			self.props.selectedItemsValue = selected;
+			self.props.subFactorName = "testtest";
+
+			self.chartOptionChange();
 			self.loadAssessmentsCached();
 			selected = [];
 			for (var ig = 0; ig < Object.keys(self.props.series).length; ig++) {
@@ -698,8 +678,7 @@ function(oj, ko, $) {
 									.keys(self.props.series[ig].items[jg].assessmentObjects).length > 0) {
 						for (var kg = 0; kg < Object
 								.keys(self.props.series[ig].items[jg].assessmentObjects).length; kg++) {
-							if (self.props.series[ig].items[jg].assessmentObjects[kg].id === self
-									.assessmentId()) {
+							if (self.props.series[ig].items[jg].assessmentObjects[kg].id === self.props.assessmentId) {
 								selected
 										.push(self.props.series[ig].items[jg].assessmentObjects[kg].gefId
 												.toString());
@@ -708,17 +687,27 @@ function(oj, ko, $) {
 					}
 				}
 			}
-			self.selectedItemsValue(selected);
+			self.props.selectedItemsValue = selected;
 		}
 
-		ko.postbox.subscribe("selectDatapointsDiagram", function(value) {
-			self.assessmentId(value);
-			self.selectDatapointsDiagram();
-		});
+		function refreshDataPointsMarked(assessmentsResultLength) {
+			document.getElementById('tabs').style.display = 'block';
 
-		ko.postbox.subscribe("refreshAssessmentsCached", function() {
-			self.loadAssessmentsCached();
-		});
+			self.dataPointsMarked = self.dataPointsMarkedIds.length
+					+ oj.Translations.getTranslatedString("dpmw")
+					+ assessmentsResultLength + oj.Translations.getTranslatedString("assessments");
+			$('#popupWrapper1').prop('dataPointsMarked', self.dataPointsMarked);
+			
+		}
+
+
+        //Returns chart by ID for detection variable name that was drilled in (clicked on)
+        self.bGotoGESClick = function() {
+            var selectedDetectionVariable = CdDetectionVariable.findByDetectionVariableId(self.props.cdDetectionVariables, self.props.selectedId);
+            oj.Router.rootInstance.store([self.props.careRecipientId, selectedDetectionVariable]);
+            oj.Router.rootInstance.go('detection_ges');
+        };
+
 
 	}
 

@@ -1,0 +1,16 @@
+{
+	"name": "assessments-preview",
+	"description" : "Popup showing selected datapoints with marked assessments.",
+	"version": "1.0.0",
+	"jetVersion": ">=3.0.0",
+	"properties": {
+		"selectedAssessments": {
+			"description" : "Array of assessments selected on diagram.",
+			"type": "Array<object>"
+		},
+		"dataPointsMarked": {
+			"description" : "Label for selected datapoint ids counter.",
+			"type": "number"
+		}
+	}
+}

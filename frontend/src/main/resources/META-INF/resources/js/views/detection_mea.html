@@ -1,0 +1,64 @@
+	<!-- <div id='ges-chart-container'>
+		<h3><span data-bind="text: data.gesName"></span> and its measures</h3>
+	    <div id="lineChart" data-bind="ojComponent: {
+	        component: 'ojChart', 
+	        type: 'line',
+	        series: data.monthlyMeasures.series, 
+	        groups: data.monthlyMeasures.groups,
+	        animationOnDisplay: 'auto',
+	        animationOnDataChange: 'auto',
+	        orientation: 'vertical',
+	        hoverBehavior: 'dim'              
+	        }"
+	         style="width:100%;height:350px;">
+	    </div>
+	    
+	</div> -->
+	
+	<div class="oj-panel oj-panel-shadow-sm" style="border: none; background-color: #fcfcfc">
+	
+		<!-- CR info -->
+		<div class="oj-panel oj-panel-shadow-sm"
+			style="border: none; background-color: #fcfcfc">
+			<span>
+			<span style="font-size: 16px" data-bind="text: careRecipientLabel "></span> 
+			   <b><span data-bind="text: careRecipientId"></span></b>
+			</span>
+			<span>
+			<span style="font-size: 16px; padding-left: 20px;" data-bind="text: ageLabel"></span>
+			  <b> <span data-bind="text: userAge"></span></b>
+			</span>
+			 <span style="font-size: 16px; padding-left: 20px;" data-bind="text: genderLabel">
+			  </span> 
+			  	<span>				  
+				    <b><span data-bind="text: userGender"></span></b>				 
+				</span>
+			<span>
+		    <span style="font-size: 16px; padding-left: 20px;" data-bind="text: assignGeriatricianLabel"></span>
+			  <b><span data-bind="text: $root.userLogin"></span></b>
+			</span>
+			<!--class="oj-header-border"-->
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+			
+			<div style="height: 20px; overflow: hidden; font-size: 16px; margin-top:5px" id="summary">
+				<b><span data-bind="text: summaryLabel"></span></b>
+				<span data-bind="text:textline"></span>
+			</div>
+			<br>
+		<a href="#" id="showmore" data-bind="text: readMoreLabel"></a>
+		</div>
+		<br><br>
+		<div id="daily-measures-container">			
+			<!-- ko foreach: data.dailyMeasures-->
+			    <anagraph-measure-view  measure-name="{{measureName}}"  line-series="{{lineSeries}}" />
+			    <!-- base-unit= "{{baseUnit}}" -->
+			    <br><br>
+			<!-- /ko -->
+		</div>
+		
+	</div>
+	
+	
+
+
+

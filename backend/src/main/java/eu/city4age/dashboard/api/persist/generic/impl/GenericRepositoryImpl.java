@@ -80,6 +80,7 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<T> doQueryWithFilter(List<eu.city4age.dashboard.api.pojo.persist.Filter> filters,
 			String filterQueryName, Map<String, Object> inQueryParams) {
 
@@ -108,6 +109,7 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
 									String filterParamName = key.toString();
 
 									if (flt.getInParams().get(key) instanceof List) {
+										
 										List<T> filterParamValue = (List<T>) flt.getInParams().get(key);
 										filter.setParameterList(filterParamName, filterParamValue);
 									} else {
@@ -143,5 +145,15 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
 	public void disableFilter(String name) {
 		entityManager.unwrap(Session.class).disableFilter(name);
 	}
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	
+	public <S extends T> S merge(S entity) {
+		return this.entityManager.merge(entity);
+	}
+
 
 }

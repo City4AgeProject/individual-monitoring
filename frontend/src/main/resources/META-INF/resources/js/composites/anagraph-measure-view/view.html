@@ -1,0 +1,24 @@
+<div id='measure-view-container' style="border:1px solid silver;">
+    <div id="lineChart" data-bind="ojComponent: {
+    	title: {text: measureName, halign: 'center'}, 
+        component: 'ojChart', 
+        type: 'line',
+        series: $props.lineSeries, 
+        groups: lineGroups, 
+        animationOnDisplay: 'auto',
+        animationOnDataChange: 'auto',
+        orientation: 'vertical',
+        hoverBehavior: 'dim',
+        yAxis: {title: $props.baseUnit},        
+        zoomAndScroll: 'live',
+        legend: legendValue
+          
+        }"
+         style="width:100%;height:350px;">
+    </div>
+   <!--  zaobljene ivice: styleDefaults: {lineType: 'curved'} -->
+</div>
+
+
+
+

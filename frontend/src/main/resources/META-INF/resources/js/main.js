@@ -11,7 +11,6 @@ requirejs.config({
   //injector:mainReleasePaths
   {
     'knockout': 'libs/knockout/knockout-3.4.0',
-    'knockout-postbox': 'libs/knockout-postbox/knockout-postbox.min',
     'jquery': 'libs/jquery/jquery-3.1.1.min',
     'jqueryui-amd': 'libs/jquery/jqueryui-amd-1.12.0.min',
     'promise': 'libs/es6-promise/es6-promise.min',
@@ -28,10 +27,12 @@ requirejs.config({
     'entities': 'domain/entities',
     'urls': 'urls',
     
-    'add-assessment': 'composites/add-assessment/loader',
-    'assessments-list': 'composites/assessments-list/loader',
-    'assessments-preview': 'composites/assessments-preview/loader',
-    'anagraph-assessment-view': 'composites/anagraph-assessment-view/loader'
+    'add-assessment': 'composites/anagraph-assessment-view/add-assessment/loader',
+    'assessments-list': 'composites/anagraph-assessment-view/assessments-list/loader',
+    'assessments-preview': 'composites/anagraph-assessment-view/assessments-preview/loader',
+    'anagraph-assessment-view': 'composites/anagraph-assessment-view/loader',
+    
+    'anagraph-measure-view': 'composites/anagraph-measure-view/loader'
   }
   //endinjector
   ,

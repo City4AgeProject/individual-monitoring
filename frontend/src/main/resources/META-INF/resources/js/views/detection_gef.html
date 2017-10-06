@@ -1,6 +1,10 @@
-<div class="oj-panel oj-panel-shadow-sm"
-	style="border: none; background-color: #fcfcfc">
+<meta charset="utf-8">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
 
+<div class="oj-panel oj-panel-shadow-sm"
+	style="border: none; background-color: #fcfcfc">	
 	<!-- CR info -->
 	<div class="oj-panel oj-panel-shadow-sm"
 		style="border: none; background-color: #fcfcfc">
@@ -12,6 +16,8 @@
 		<span style="font-size: 16px; padding-left: 20px;" data-bind="text: ageLabel"></span>
 		  <b> <span data-bind="text: userAge"></span></b>
 		</span>
+		<span style="font-size: 16px; padding-left: 20px;" data-bind="text: genderLabel"></span> 
+		<span><b><span data-bind="text: userGender"></span></b></span>
 		<span>
 	    <span style="font-size: 16px; padding-left: 20px;" data-bind="text: assignGeriatricianLabel"></span>
 		  <b><span data-bind="text: $root.userLogin"></span></b>
@@ -23,6 +29,8 @@
 			<b><span data-bind="text: summaryLabel"></span></b>
 			<span data-bind="text:textline"></span>
 		</div>
+		<br>
+		<a href="#" id="showmore" data-bind="text: readMoreLabel"></a>
 	</div>
 	<!-- 
 		<div class="oj-panel oj-panel-shadow-sm"
@@ -144,11 +152,12 @@
                             }"
 			style="width: 100%; height: 400px;"></div>
 	</div>
-
 </div>
 
+
 <anagraph-assessment-view id="detectionGEFGroup1FactorsLineChart"
-	care-recipient-id="{{careRecipientId}}"
-	parent-factor-id="{{parentFactorId}}" series="{{lineSeriesValue}}"
-	groups="{{lineGroupsValue}}" title="{{titleObj}}"
-	legend='{"position":"top"}' drilling='on' style="display: none" />
+	care-recipient-id="{{careRecipientId}}" parent-factor-id="{{parentFactorId}}"
+	selected-id="{{selectedId}}" title-value="{{titleValue}}" cd-detection-variables="{{cdDetectionVariables}}"
+	series="{{lineSeriesValue}}" groups="{{lineGroupsValue}}"
+	legend='{"position":"bottom"}'
+	drilling='on' style="display: none" />

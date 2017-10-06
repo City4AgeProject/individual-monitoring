@@ -79,47 +79,8 @@ public class UserService {
         response.setPilotName(pilotName);
         
         return Response.ok(response).build();
-//        try {
-//            logger.info("Logging in...");
-//            user = userInRoleRepository.findBySystemUsernameAndPassword(username, password);
-//
-//            if (user == null) {
-//                response.setMessage("wrong credentials");
-//                response.setResponseCode(0);
-//                response.setDisplayName("");
-//                return Response.ok(response).build();
-//            } else {
-//                if (user.getRoleId().equals(Short.valueOf("8"))) {
-//                    response.setMessage("success");
-//                    response.setResponseCode(10);
-//                    if (user.getUserInSystem().getDisplayName() != null) {
-//                        response.setDisplayName(user.getUserInSystem().getDisplayName());
-//                        Long pil = Long.parseLong(user.getPilotId().toString());
-//                        userPilot = pilotRepository.findOne(pil);
-//
-//                        response.setpilotName(userPilot.getName());
-//                        response.setPilotId(user.getPilotId());
-//                        response.setRoleId(user.getRoleId());
-//                    } else {
-//                        response.setDisplayName("");
-//                    }
-//
-//                    return Response.ok(response).build();
-//                } else {
-//                    response.setMessage("you don't have the right permissions");
-//                    response.setResponseCode(0);
-//                    response.setDisplayName("");
-//                    return Response.ok(response).build();
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            response.setMessage("something went terrible wrong: " + e.getMessage());
-//            response.setResponseCode(2);
-//            response.setDisplayName("");
-//            return Response.ok(response).build();
-//        }
+
     }
     
 }
+

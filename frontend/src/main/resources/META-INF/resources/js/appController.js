@@ -53,7 +53,8 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrou
                     'login': {label: 'Login', isDefault: true},
                     'cr_list_full': {label: 'Care Recipient'},
                     'detection_ges': {label: 'Detection GES'},
-                    'detection_gef': {label: 'Detection GEF'}
+                    'detection_gef': {label: 'Detection GEF'},
+                    'detection_mea': {label: 'Detection MEA'}
                 });
                 oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
 
@@ -90,8 +91,7 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrou
                 self.appName = ko.observable("C4A-dashboard");
                 self.userLogin = ko.observable("");
                 self.userPilotName = ko.observable("");
-                self.userPilotId = ko.observable("");
-                self.userRoleId = ko.observable("");
+ 
                 if (sp.noData()) {
                     console.log(" user is logged in");
                     var displayname = sessionStorage.getItem("displayname");
@@ -114,8 +114,6 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrou
                             sessionStorage.removeItem("pilotname");
                             $('.user-menu').css({display: 'none'});
                             console.log(" user is not logged in");
-                            /*ko.cleanNode(document.getElementById('globalBody')); // clean it
-                            ko.applyBindings(app, document.getElementById('globalBody'));*/
                             oj.Router.rootInstance.go("login");
                             break;
                         case "help-list":
@@ -138,6 +136,9 @@ define(['ojs/ojcore', 'knockout', 'navigation', 'setting_properties', 'ojs/ojrou
                     new footerLink('Terms Of Use', 'termsOfUse', 'http://www.city4ageproject.eu/'),
                     new footerLink('Your Privacy Rights', 'yourPrivacyRights', 'http://www.city4ageproject.eu/')
                 ]);
+                
+                this.loggedinasLabel = oj.Translations.getTranslatedString('loggedinas');
+                
             }
 
             return new AppControllerViewModel();
