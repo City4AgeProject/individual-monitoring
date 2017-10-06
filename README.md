@@ -1,5 +1,5 @@
-# individual-monitoring-Belit
-Individual monitoring dashboard app, Belit version with Hibernate ORM and support for assessments. 
+# individual-monitoring 
+Individual monitoring dashboard app, Main version with Hibernate ORM and support for assessments. 
 
 Deployment on Glassfish instructions - AUTOMATIC (Using script - under Windows OS):
 ------------------------------------------------------------------------------------
@@ -24,4 +24,4 @@ Running unit tests from Eclipse IDE:
 3. Import project into workspace from file system using Import > Existing projects into workspace
 4. Run unit tests from src/test/java packages
 
-Note: Check jboss-logging and guava jar versions used. Glassfish load older versions by default
+Note: Check jboss-logging and guava jar versions used. Glassfish loads older versions by default
